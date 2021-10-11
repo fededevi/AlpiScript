@@ -1,9 +1,9 @@
 #include "expression.h"
 #include <iostream>
 
-#include "source/visitors/astconverter.h"
-#include "source/ast/expressionwriter.h"
-#include "source/ast/expressionevaluator.h"
+#include "astconverter.h"
+#include "../ast/expressionwriter.h"
+#include "../ast/expressionevaluator.h"
 
 #include "datatype.h"
 #include "basetypes.h"
@@ -16,20 +16,31 @@ Expression *Expression::parse(const std::string & input)
     return astconv.parse(input + "\n");
 }
 
-Expression *Expression::evaluate() const
+Expression *Expression::evaluate( Context * ctx ) const
 {
     static ExpressionEvaluator evaluator;
-    return static_cast<Expression *>(accept(&evaluator, nullptr));
+    return static_cast<Expression *>(accept(&evaluator, ctx));
 }
 
-Expression *Expression::evaluate(const std::string & s)
+Expression * Expression::compile( Context * ctx )
 {
-    std::cout << s << " -> " << std::flush;
+    static ExpressionEvaluator evaluator;
+    return static_cast<Expression *>(accept(&evaluator, ctx));
+}
+
+Expression *Expression::evaluate(const std::string & s, Context * ctx)
+{
+    //std::cout << s << " -> " << std::flush;
     ExpressionUPtr toEvaluate (parse(s));
-    std::cout << toEvaluate->toString() << " -> " << std::endl;
-    Expression * evaluated = toEvaluate->evaluate();
-    std::cout << evaluated->toString() << std::endl;
+    //std::cout << toEvaluate->toString() << " -> " << std::flush;
+    Expression * evaluated = toEvaluate->evaluate(ctx);
+    //std::cout << evaluated->toString() << std::endl;
     return evaluated;
+}
+
+std::unique_ptr<Expression> Expression::evaluateUPtr(const std::string & s, Context *ctx)
+{
+    return std::unique_ptr<Expression>(Expression::evaluate(s, ctx));
 }
 
 std::string Expression::toString() const
@@ -41,23 +52,38 @@ std::string Expression::toString() const
 }
 
 bool Expression::isNumber() {
+    Int * exp = dynamic_cast<Int *>(this);
+    if (!exp)
+        std::cout << "Expression is not Int" << std::endl;
     return dynamic_cast<Number *>(this);
 }
 
 Id * Expression::toId() {
-    return dynamic_cast<Id *>(this);
+    Id * exp = dynamic_cast<Id *>(this);
+    if (!exp)
+        std::cout << "Expression is not Id" << std::endl;
+    return exp;
 }
 
 Int * Expression::toInt() {
-    return dynamic_cast<Int *>(this);
+    Int * exp = dynamic_cast<Int *>(this);
+    if (!exp)
+        std::cout << "Expression is not Int" << std::endl;
+    return exp;
 }
 
 Float * Expression::toFloat() {
-    return dynamic_cast<Float *>(this);
+    Float * exp = dynamic_cast<Float *>(this);
+    if (!exp)
+        std::cout << "Expression is not Float" << std::endl;
+    return exp;
 }
 
 Boolean * Expression::toBool() {
-    return dynamic_cast<Boolean *>(this);
+    Boolean * exp = dynamic_cast<Boolean *>(this);
+    if (!exp)
+        std::cout << "Expression is not Boolean" << std::endl;
+    return exp;
 }
 
 Int::Int(int64_t v) : value(v) {

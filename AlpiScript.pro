@@ -21,6 +21,7 @@ DISTFILES += \
 
 HEADERS += \
     source/ast/basetypes.h \
+    source/ast/context.h \
     source/ast/datatype.h \
     source/ast/expression.h \
     source/ast/expressionevaluator.h \
@@ -63,10 +64,11 @@ HEADERS += \
     source/javacc/generated/Token.h \
     source/javacc/generated/TokenManager.h \
     source/javacc/generated/TokenMgrError.h \
-    source/visitors/astconverter.h
+    source/ast/astconverter.h
 
 SOURCES += \
     source/ast/basetypes.cpp \
+    source/ast/context.cpp \
     source/ast/datatype.cpp \
     source/ast/expression.cpp \
     source/ast/expressionevaluator.cpp \
@@ -100,4 +102,4 @@ SOURCES += \
     source/javacc/generated/Token.cc \
     source/javacc/generated/TokenMgrError.cc \
     source/main.cpp \
-    source/visitors/astconverter.cpp
+    source/ast/astconverter.cpp

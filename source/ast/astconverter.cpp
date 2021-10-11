@@ -2,11 +2,11 @@
 
 #include "../ast/expression.h"
 
-#include "source/javacc/generated/Parser.h"
-#include "source/javacc/generated/ParseException.h"
-#include "source/javacc/generated/CharStream.h"
-#include "source/javacc/generated/ParserTokenManager.h"
-#include "source/javacc/generated/ParserTokenManager.h"
+#include "../javacc/generated/Parser.h"
+#include "../javacc/generated/ParseException.h"
+#include "../javacc/generated/CharStream.h"
+#include "../javacc/generated/ParserTokenManager.h"
+#include "../javacc/generated/ParserTokenManager.h"
 
 namespace AlpiScript {
 
