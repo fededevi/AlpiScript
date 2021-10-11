@@ -216,6 +216,7 @@ void alpiScriptArithmeticTest03(){
     assert( Expression::evaluate("c * d", &ctx)->toFloat()->value ==  c * d);
     assert( Expression::evaluate("c / d", &ctx)->toFloat()->value ==  c / d);
     assert( Expression::evaluate("c * d + (a * b)", &ctx)->toFloat()->value == c * d + (a * b));
+    assert( Expression::evaluate("c * d + (a * b)", &ctx)->toFloat()->value == c * d + (a * b));
 }
 
 int main(int , char** ) {
@@ -241,7 +242,7 @@ int main(int , char** ) {
     std::cout << "Start benchmark full parsing and evaluation." << std::endl;
 
     auto t1 = high_resolution_clock::now();
-    for (int i = 0; i < 100000; i ++)  {
+    for (int i = 0; i < 10000; i ++)  {
         assert(Expression::evaluate("(1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99")->toInt()->value == (1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99);
     }
     auto t2 = high_resolution_clock::now();
@@ -252,7 +253,7 @@ int main(int , char** ) {
     Expression * precompiled = Expression::parse("(1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99");
 
     t1 = high_resolution_clock::now();
-    for (int i = 0; i < 100000; i ++)  {
+    for (int i = 0; i < 10000; i ++)  {
         precompiled->evaluate();
     }
     t2 = high_resolution_clock::now();
