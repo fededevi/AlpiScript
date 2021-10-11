@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: UNIT-TESTS
 
 on:
   push:
@@ -22,5 +22,3 @@ jobs:
       run: make
     - name: make test
       run: make test
-      name: C/C++ CI
-      
