@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../javacc/generated/ParserVisitor.h"
+#include "../javacc/generated/ParserVisitor.h"
 
 class Expression;
 class UnaryExpression;
