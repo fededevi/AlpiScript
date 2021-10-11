@@ -216,6 +216,7 @@ void alpiScriptArithmeticTest03(){
     assert( Expression::evaluate("c * d", &ctx)->toFloat()->value ==  c * d);
     assert( Expression::evaluate("c / d", &ctx)->toFloat()->value ==  c / d);
     assert( Expression::evaluate("c * d + (a * b)", &ctx)->toFloat()->value == c * d + (a * b));
+    assert( Expression::evaluate("c * d + (a * b) + 1", &ctx)->toFloat()->value == c * d + (a * b));
 }
 
 int main(int , char** ) {
