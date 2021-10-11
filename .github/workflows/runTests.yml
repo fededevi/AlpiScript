@@ -3,6 +3,7 @@ name: UNIT-TESTS
 on:
   push:
     branches: [ AlpiScript ]
+    
   pull_request:
     branches: [ AlpiScript ]
 
