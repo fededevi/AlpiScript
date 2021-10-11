@@ -38,6 +38,11 @@ $(BUILD_DIR)/%.cc.o: %.cc
 
 .PHONY: clean
 
+parser:
+	$(RM) -r source/javacc/generated/
+	java -cp source/javacc/javacc.jar jjtree source/javacc/grammar.jjt
+	java -cp source/javacc/javacc.jar javacc source/javacc/generated/grammar.jj 
+
 clean:
 	$(RM) -r $(BUILD_DIR)
 	

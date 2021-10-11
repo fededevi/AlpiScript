@@ -23,7 +23,7 @@ VISITOR_RETURN_TYPE="void*";
 
 OUTPUT_LANGUAGE = "c++";
 NAMESPACE="AlpiScript";
-OUTPUT_DIRECTORY="generated";
+OUTPUT_DIRECTORY="source/javacc/generated";
 
 //DEBUG STUFF
 //SANITY_CHECK = true;
