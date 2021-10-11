@@ -2,10 +2,10 @@ name: UNIT-TESTS
 
 on:
   push:
-    branches: [ AlpiScript ]
+    branches: [ feature/autoBuildParser ]
     
   pull_request:
-    branches: [ AlpiScript ]
+    branches: [ feature/autoBuildParser ]
 
 jobs:
   build:
