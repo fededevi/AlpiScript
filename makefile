@@ -10,7 +10,7 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -c -pipe -O2 -std=gnu++11 -Wall -W -D_REENTRANT -fPIC
+CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -c -pipe -O3 -std=gnu++11 -Wall -W -D_REENTRANT -fPIC
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
@@ -40,6 +40,10 @@ $(BUILD_DIR)/%.cc.o: %.cc
 
 clean:
 	$(RM) -r $(BUILD_DIR)
+	
+test:
+	$(BUILD_DIR)/AlpiScript
+
 
 -include $(DEPS)
 
