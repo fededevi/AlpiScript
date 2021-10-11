@@ -73,3 +73,5 @@ Thumbs.db
 
 
 source/javacc/generated/
+
+build/

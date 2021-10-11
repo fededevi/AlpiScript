@@ -1,74 +1,46 @@
-CXX ?= g++
+TARGET_EXEC ?= AlpiScript
 
-# path #
-SRC_PATH = source
-BUILD_PATH = build
-BIN_PATH = $(BUILD_PATH)/bin
+BUILD_DIR ?= ./build
+SRC_DIRS ?= ./source
 
-# executable # 
-BIN_NAME = AlpiScript
+SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.cc )
+OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
+DEPS := $(OBJS:.o=.d)
 
-# extensions #
-SRC_EXT = c
+INC_DIRS := $(shell find $(SRC_DIRS) -type d)
+INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-# code lists #
-# Find all source files in the source directory, sorted by most recently modified
-SOURCES = $(shell find $(SRC_PATH) -name '*.c*' | sort -k 1nr | cut -f2-)
+CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -c -pipe -O2 -std=gnu++11 -Wall -W -D_REENTRANT -fPIC
 
-# Set the object file names, with the source directory stripped
-# from the path, and the build path prepended in its place
-OBJECTS = $(SOURCES:$(SRC_PATH)/%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
+$(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
 
-# Set the dependency files that will be used to add header dependencies
-DEPS = $(OBJECTS:.o=.d)
+# assembly
+#$(BUILD_DIR)/%.s.o: %.s
+#	$(MKDIR_P) $(dir $@)
+#	$(AS) $(ASFLAGS) -c $< -o $@
 
-# flags #
-COMPILE_FLAGS = -std=c++11 -Wall -Wextra -g
-INCLUDES = -I include/ -I /usr/local/include
+# c source
+#$(BUILD_DIR)/%.c.o: %.c
+#	$(MKDIR_P) $(dir $@)
+#	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-# Space-separated pkg-config libraries used by this project
-LIBS =
+# c++ source (cpp)
+$(BUILD_DIR)/%.cpp.o: %.cpp
+	$(MKDIR_P) $(dir $@)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+	
+# c++ source (cc) //For generated JavaCC files
+$(BUILD_DIR)/%.cc.o: %.cc
+	$(MKDIR_P) $(dir $@)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-.PHONY: default_target
-default_target: release
-
-.PHONY: release
-release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS)
-release: dirs
-	@$(MAKE) all
-
-.PHONY: dirs
-dirs:
-	@echo "Creating directories"
-	@mkdir -p $(dir $(OBJECTS))
-	@mkdir -p $(BIN_PATH)
 
 .PHONY: clean
+
 clean:
-	@echo "Deleting $(BIN_NAME) symlink"
-	@$(RM) $(BIN_NAME)
-	@echo "Deleting directories"
-	@$(RM) -r $(BUILD_PATH)
-	@$(RM) -r $(BIN_PATH)
+	$(RM) -r $(BUILD_DIR)
 
-# checks the executable and symlinks to the output
-.PHONY: all
-all: $(BIN_PATH)/$(BIN_NAME)
-	@echo "Making symlink: $(BIN_NAME) -> $<"
-	@$(RM) $(BIN_NAME)
-	@ln -s $(BIN_PATH)/$(BIN_NAME) $(BIN_NAME)
-
-# Creation of the executable
-$(BIN_PATH)/$(BIN_NAME): $(OBJECTS)
-	@echo "Linking: $@"
-	$(CXX) $(OBJECTS) -o $@ ${LIBS}
-
-# Add dependency files, if they exist
 -include $(DEPS)
 
-# Source file rules
-# After the first compilation they will be joined with the rules from the
-# dependency files to provide header dependencies
-$(BUILD_PATH)/%.o: $(SRC_PATH)/%.$(SRC_EXT)
-	@echo "Compiling: $< -> $@"
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+MKDIR_P ?= mkdir -p
