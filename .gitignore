@@ -73,3 +73,15 @@ Thumbs.db
 
 
 build/
+
+*.cflags
+
+*.config
+
+*.creator
+
+*.cxxflags
+
+*.files
+
+*.includes
