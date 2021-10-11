@@ -72,6 +72,4 @@ Thumbs.db
 *.exe
 
 
-source/javacc/generated/
-
 build/
