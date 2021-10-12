@@ -5,10 +5,13 @@
 #include "SimpleNode.h"
 #include "ASTLessThan.h"
 #include "ASTNegative.h"
+#include "ASTProgram.h"
 #include "ASTDivision.h"
 #include "ASTMult.h"
 #include "ASTIdentifier.h"
+#include "ASTAssignment.h"
 #include "ASTBoolean.h"
+#include "ASTDeclaration.h"
 #include "ASTFloat.h"
 #include "ASTStart.h"
 #include "ASTModule.h"
@@ -24,4 +27,4 @@
 #include "ASTAdd.h"
 #include "ASTOr.h"
 #endif
-/* JavaCC - OriginalChecksum=917c0140c848714a30bc37c08b302f64 (do not edit this line) */
+/* JavaCC - OriginalChecksum=77c6c66060bf6a207d1a150945f772e3 (do not edit this line) */

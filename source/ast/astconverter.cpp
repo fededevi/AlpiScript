@@ -1,6 +1,7 @@
 #include "astconverter.h"
 
 #include "../ast/expression.h"
+#include "../ast/program.h"
 
 #include "../javacc/generated/Parser.h"
 #include "../javacc/generated/ParseException.h"
@@ -10,7 +11,7 @@
 
 namespace AlpiScript {
 
-Expression *AstConverter::parse(const std::string &input)
+Expression *AstConverter::parseExpression(const std::string &input)
 {
     try {
         CharStream stream(input.c_str(), input.size() - 1, 1, 1);
@@ -20,6 +21,22 @@ Expression *AstConverter::parse(const std::string &input)
         AstConverter astconv;
         Expression * e = (Expression *)baseNode->jjtAccept(&astconv, null);
         return e;
+    } catch (const ParseException& e) {
+        cout << "ERROR..." << e.tokenImage << endl;
+        return null;
+    }
+}
+
+Program *AstConverter::parseProgram(const std::string &input)
+{
+    try {
+        CharStream stream(input.c_str(), input.size() - 1, 1, 1);
+        ParserTokenManager scanner = ParserTokenManager(&stream);
+        Parser parser(&scanner);
+        SimpleNode * baseNode = parser.parseProgram();
+        AstConverter astconv;
+        Program * p = (Program *)baseNode->jjtAccept(&astconv, null);
+        return p;
     } catch (const ParseException& e) {
         cout << "ERROR..." << e.tokenImage << endl;
         return null;
@@ -41,6 +58,13 @@ T * fill(AstConverter * astConv, const SimpleNode * node)
 
     return l;
 }
+
+template<typename T>
+std::unique_ptr<T> childAcceptUPtr(AstConverter * astConv, const SimpleNode * node, int i)
+{
+    return std::unique_ptr<T>(static_cast<T *>(node->jjtGetChild(i)->jjtAccept(astConv, null)));
+}
+
 /*
 void AstConverter::fillOperands(UnaryExpression * me, const SimpleNode * node)
 {
@@ -130,6 +154,44 @@ void *AstConverter::visit(const ASTAnd *node, void *) {
 
 void *AstConverter::visit(const ASTOr *node, void * ) {
     return fill<Or>(this, node);
+}
+
+void *AstConverter::visit(const ASTProgram * node, void *)
+{
+    Program * firstNode = static_cast<Program *>(node->jjtGetChild(0)->jjtAccept(this, null));
+    Program * lastNode = firstNode;
+    int c  = 1;
+    while (c < node->jjtGetNumChildren()) {
+        lastNode->next = childAcceptUPtr<Program>(this, node, c);
+        c++;
+        lastNode = lastNode->next.get();
+    }
+    return firstNode;
+}
+
+void *AstConverter::visit(const ASTDeclaration * node, void *)
+{
+    auto decl = new Declaration();
+    decl->dataType = childAcceptUPtr<Id>(this, node, 0);
+    decl->id = childAcceptUPtr<Id>(this, node, 1);
+
+    if (node->jjtGetNumChildren() == 2) {
+        return decl;
+    } else { //Declaration + assignement
+        auto ass = new Assignment();
+        ass->id = childAcceptUPtr<Id>(this, node, 1);
+        ass->value = childAcceptUPtr<Expression>(this, node, 2);
+        decl->next = std::unique_ptr<Assignment>(ass);
+        return decl;
+    }
+}
+
+void *AstConverter::visit(const ASTAssignment *node, void *)
+{
+    auto ass = new Assignment();
+    ass->id = childAcceptUPtr<Id>(this, node, 0);
+    ass->value = childAcceptUPtr<Expression>(this, node, 1);
+    return ass;
 }
 
 void *AstConverter::visit(const ASTFloat * node, void *){

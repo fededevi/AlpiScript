@@ -1,6 +1,6 @@
 
 options {
-LOOKAHEAD = 13;
+LOOKAHEAD = 3;
 FORCE_LA_CHECK = true;
 
 //#CHOICE_AMBIGUITY_CHECK = 2;
@@ -91,6 +91,22 @@ TOKEN : {
 
 TOKEN : { <IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)* > }
 
+ASTProgram * parseProgram() #Program : {} {
+    (statement_parse() ";")+  { return jjtThis; }
+}
+
+void statement_parse() : {}{
+    declaration()
+  | assignment()
+}
+
+void declaration() : {}{
+    (identifier() identifier() ( "=" expression() )? ) #Declaration {}
+}
+
+void assignment() : {}{
+    (identifier() "=" expression() ) #Assignment {}
+}
 
 ASTStart * parse() #Start : {} {
 expression()  { return jjtThis; }

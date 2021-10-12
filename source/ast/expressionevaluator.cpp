@@ -125,5 +125,16 @@ void *ExpressionEvaluator::visit(const Method *node, void *data) const
 
 }
 
+void *ExpressionEvaluator::visit(const Declaration *node, void *data) const
+{
+    Context * ctx = static_cast<Context *>(data);
+    //ctx->
+}
+
+void *ExpressionEvaluator::visit(const Assignment *node, void *data) const
+{
+
+}
+
 
 

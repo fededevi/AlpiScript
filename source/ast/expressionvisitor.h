@@ -24,6 +24,8 @@ class TypeId;
 class Parameter;
 class Method;
 class Neg;
+class Declaration;
+class Assignment;
 
 class ExpressionVisitor
 {
@@ -54,4 +56,7 @@ public:
 
     virtual void *visit(const And          * node, void *data) const = 0;
     virtual void *visit(const Or           * node, void *data) const = 0;
+
+    virtual void *visit(const Declaration  * node, void *data) const = 0;
+    virtual void *visit(const Assignment   * node, void *data) const = 0;
 };

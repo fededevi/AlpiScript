@@ -9,6 +9,9 @@ class ParserVisitor
 {
   public:
   virtual void* visit(const SimpleNode *node, void* data) = 0;
+  virtual void* visit(const ASTProgram *node, void* data) = 0;
+  virtual void* visit(const ASTDeclaration *node, void* data) = 0;
+  virtual void* visit(const ASTAssignment *node, void* data) = 0;
   virtual void* visit(const ASTStart *node, void* data) = 0;
   virtual void* visit(const ASTAnd *node, void* data) = 0;
   virtual void* visit(const ASTOr *node, void* data) = 0;
@@ -37,6 +40,15 @@ public:
   virtual void* visit(const SimpleNode *node, void* data) {
     return defaultVisit(node, data);
 }
+  virtual void* visit(const ASTProgram *node, void* data) {
+    return defaultVisit(node, data);
+  }
+  virtual void* visit(const ASTDeclaration *node, void* data) {
+    return defaultVisit(node, data);
+  }
+  virtual void* visit(const ASTAssignment *node, void* data) {
+    return defaultVisit(node, data);
+  }
   virtual void* visit(const ASTStart *node, void* data) {
     return defaultVisit(node, data);
   }
@@ -101,4 +113,4 @@ public:
 };
 }
 #endif
-/* JavaCC - OriginalChecksum=b600470783b54ef48aad2ed2729e0103 (do not edit this line) */
+/* JavaCC - OriginalChecksum=5b013f6be1fc6458ca5ac63963c1cf8f (do not edit this line) */
