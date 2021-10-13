@@ -55,6 +55,13 @@ void *ExpressionWriter::visit(const Int *node, void *data) const
     return out;
 }
 
+void *ExpressionWriter::visit(const String *node, void *data) const
+{
+    std::string * out = (std::string *)data;
+    out->append(node->value);
+    return out;
+}
+
 void *ExpressionWriter::visit(const Id *node, void *data) const
 {
     std::string * out = (std::string *)data;

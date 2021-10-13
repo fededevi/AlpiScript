@@ -51,6 +51,7 @@ HEADERS += \
     source/javacc/generated/ASTOr.h \
     source/javacc/generated/ASTProgram.h \
     source/javacc/generated/ASTStart.h \
+    source/javacc/generated/ASTString.h \
     source/javacc/generated/ASTSub.h \
     source/javacc/generated/CharStream.h \
     source/javacc/generated/ErrorHandler.h \
@@ -101,6 +102,7 @@ SOURCES += \
     source/javacc/generated/ASTOr.cc \
     source/javacc/generated/ASTProgram.cc \
     source/javacc/generated/ASTStart.cc \
+    source/javacc/generated/ASTString.cc \
     source/javacc/generated/ASTSub.cc \
     source/javacc/generated/CharStream.cc \
     source/javacc/generated/JJTParserState.cc \

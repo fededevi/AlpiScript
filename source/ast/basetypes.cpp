@@ -4,6 +4,7 @@
 #define INT TypeInt::instance()
 #define FLOAT TypeFloat::instance()
 #define BOOL TypeBool::instance()
+#define STRING TypeBool::instance()
 
 void TypeBool::load()
 {
@@ -45,11 +46,9 @@ void TypeFloat::load()
     addMethod( Method(FLOAT,  Name("="), {FLOAT}, [](std::vector<void *> params) -> Float *{
                    return new Float(static_cast<Float *>(params[0])->value);
                }));
-
     addMethod( Method(FLOAT,  Name("="), {INT}, [](std::vector<void *> params) -> Float *{
                    return new Float(static_cast<Int *>(params[0])->value);
                }));
-
     addMethod( Method(FLOAT,  Name("new"), { }, [](std::vector<void *>) -> Float *{
                    return new Float(0);
                }));
@@ -215,4 +214,22 @@ void TypeInt::load()
 TypeInt::TypeInt()
 {
     name = "int";
+}
+
+void TypeString::load()
+{
+    if (loaded) return;
+    if (!loaded) loaded = true;
+
+    addMethod( Method(STRING,  Name("="), {STRING}, [](std::vector<void *> params) -> String *{
+                   return new String(static_cast<String *>(params[0])->value.c_str());
+               }));
+    addMethod( Method(STRING,  Name("new"), { }, [](std::vector<void *>) -> String *{
+                   return new String("");
+               }));
+}
+
+TypeString::TypeString()
+{
+    name = "string";
 }

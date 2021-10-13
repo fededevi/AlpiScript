@@ -568,12 +568,14 @@ if (jjtc002) {
     } else if (jj_2_22(3)) {
       parseBoolean();
     } else if (jj_2_23(3)) {
-      identifier();
+      parseString();
     } else if (jj_2_24(3)) {
+      identifier();
+    } else if (jj_2_25(3)) {
       jj_consume_token(LP);
       expression();
       jj_consume_token(RP);
-    } else if (jj_2_25(3)) {
+    } else if (jj_2_26(3)) {
       jj_consume_token(NOT);
 ASTNot *jjtn003 = new ASTNot(JJTNOT);
            bool jjtc003 = true;
@@ -690,6 +692,29 @@ if (jjtc000) {
 }
 
 
+void Parser::parseString() {Token * t;/*@bgen(jjtree) String */
+  ASTString *jjtn000 = new ASTString(JJTSTRING);
+  bool jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      t = jj_consume_token(STRING_LITERAL);
+jjtree.closeNodeScope(jjtn000, true);
+                       jjtc000 = false;
+jjtn000->jjtSetValue((void *)t->image.c_str());
+    } catch ( ...) {
+if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    }
+if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+}
+
+
   Parser::Parser(TokenManager *tokenManager){
     head = nullptr;
     ReInit(tokenManager);
@@ -748,7 +773,7 @@ Token * Parser::jj_consume_token(int kind)  {
       jj_gen++;
       if (++jj_gc > 100) {
         jj_gc = 0;
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 26; i++) {
           JJCalls *c = &jj_2_rtns[i];
           while (c != nullptr) {
             if (c->gen < jj_gen) c->first = nullptr;
@@ -842,7 +867,7 @@ int Parser::jj_ntk_f(){
 
   void Parser::jj_rescan_token(){
     jj_rescan = true;
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 26; i++) {
       JJCalls *p = &jj_2_rtns[i];
       do {
         if (p->gen > jj_gen) {
@@ -873,6 +898,7 @@ int Parser::jj_ntk_f(){
             case 22: jj_3_23(); break;
             case 23: jj_3_24(); break;
             case 24: jj_3_25(); break;
+            case 25: jj_3_26(); break;
           }
         }
         p = p->next;

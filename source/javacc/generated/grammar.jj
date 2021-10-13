@@ -77,7 +77,6 @@ TOKEN : { < #LETTER : ["A"-"Z","_","a"-"z"] > }
 
 TOKEN : { < BOOLEAN : "true" | "false" > }
 
-
 TOKEN : {
 <INTEGER_LITERAL: <DECIMAL_LITERAL> (["l","L"])? | <HEX_LITERAL> (["l","L"])? | <OCTAL_LITERAL> (["l","L"])?>
 |  <#DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])*>
@@ -88,7 +87,6 @@ TOKEN : {
 |  <CHARACTER_LITERAL: "\'" (~["\'","\\","\n","\r"] | "\\" (["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])? | ["0"-"3"] ["0"-"7"] ["0"-"7"])) "\'">
 |  <STRING_LITERAL: "\"" ( ~["\"","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])?  | ["0"-"3"] ["0"-"7"] ["0"-"7"] | ( ["\n","\r"] | "\r\n")))* "\"">
 }
-
 
 TOKEN : { <IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)* > }
 
@@ -527,6 +525,7 @@ void unary() : {}
    }
 /*@egen*/             
  | parseBoolean()
+ | parseString()
  | identifier()
  | <LP> expression() <RP>
  | <NOT>/*@bgen(jjtree) #Not( 1) */
@@ -645,6 +644,33 @@ void identifier()            : {Token * t;/*@bgen(jjtree) Identifier */
                    jjtree.closeNodeScope(jjtn000, true);
                    jjtc000 = false;
                  }
+/*@egen*/ { jjtn000->jjtSetValue((void *)t->image.c_str()); }/*@bgen(jjtree)*/
+  } catch (...) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+  } {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+  }
+/*@egen*/ }
+
+void parseString()        : {Token * t;/*@bgen(jjtree) String */
+  ASTString *jjtn000 = new ASTString(JJTSTRING);
+  bool jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) String */
+  try {
+/*@egen*/ t=<STRING_LITERAL>/*@bgen(jjtree)*/
+                     {
+                       jjtree.closeNodeScope(jjtn000, true);
+                       jjtc000 = false;
+                     }
 /*@egen*/ { jjtn000->jjtSetValue((void *)t->image.c_str()); }/*@bgen(jjtree)*/
   } catch (...) {
     if (jjtc000) {

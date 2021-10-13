@@ -22,7 +22,7 @@ Expression *Expression::evaluate( Context * ctx ) const
     return static_cast<Expression *>(accept(&evaluator, ctx));
 }
 
-Expression * Expression::compile( Context * ctx )
+Expression * Expression::compile(Context * ctx )
 {
     static ExpressionEvaluator evaluator;
     return static_cast<Expression *>(accept(&evaluator, ctx));
@@ -86,6 +86,13 @@ Boolean * Expression::toBool() {
     return exp;
 }
 
+String * Expression::toStringLiteral() {
+    String * exp = dynamic_cast<String *>(this);
+    if (!exp)
+        std::cout << "Expression is not a String" << std::endl;
+    return exp;
+}
+
 Int::Int(int64_t v) : value(v) {
     type = TypeInt::instance();
 }
@@ -96,4 +103,10 @@ Float::Float(double v) : value(v) {
 
 Boolean::Boolean(bool v) : value(v) {
     type = TypeBool::instance();
+}
+
+String::String(const char *v)
+    :value(v)
+{
+    type = TypeString::instance();
 }

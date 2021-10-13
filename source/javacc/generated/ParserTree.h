@@ -17,6 +17,7 @@
 #include "ASTModule.h"
 #include "ASTLessEqual.h"
 #include "ASTGreaterEqual.h"
+#include "ASTString.h"
 #include "ASTNot.h"
 #include "ASTAnd.h"
 #include "ASTEqual.h"
@@ -27,4 +28,4 @@
 #include "ASTAdd.h"
 #include "ASTOr.h"
 #endif
-/* JavaCC - OriginalChecksum=77c6c66060bf6a207d1a150945f772e3 (do not edit this line) */
+/* JavaCC - OriginalChecksum=feae515fb47495a442f8faaec08d9fcf (do not edit this line) */

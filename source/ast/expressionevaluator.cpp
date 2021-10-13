@@ -43,6 +43,10 @@ void *ExpressionEvaluator::visit(const Sub *node, void *data) const{
     return evaluateBinaryMethodCall(node, Name("-"), static_cast<Context *>(data));
 }
 
+void *ExpressionEvaluator::visit(const String *node, void *) const{
+    return new String(node->value.c_str());
+}
+
 void *ExpressionEvaluator::visit(const Mul *node, void *data) const{
     return evaluateBinaryMethodCall(node, Name("*"), static_cast<Context *>(data));
 }

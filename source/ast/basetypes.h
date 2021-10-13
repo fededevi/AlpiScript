@@ -42,3 +42,16 @@ private:
     TypeBool();
 };
 
+class TypeString : public DataType
+{
+public:
+    static TypeString * instance() {
+        static TypeString instance;
+        return &instance;
+    }
+
+    void load();
+private:
+    TypeString();
+};
+

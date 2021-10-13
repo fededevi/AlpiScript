@@ -207,6 +207,12 @@ void * AstConverter::visit(const ASTInteger * node, void *){
     return new Int(std::stoi(c));
 }
 
+void *AstConverter::visit(const ASTString *node, void *data)
+{
+    char * c = (char *)(node->jjtGetValue());
+    return new String(c);
+}
+
 void *AstConverter::visit(const ASTIdentifier * node, void *)
 {
     return new Id((char *)(node->jjtGetValue()));
