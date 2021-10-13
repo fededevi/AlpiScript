@@ -17,4 +17,6 @@ public:
 
     bool isDeclared(const std::string &) const;
     bool isDefined(const std::string &) const;
+
+    std::string toString() const;
 };

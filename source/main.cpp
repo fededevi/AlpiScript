@@ -1,7 +1,7 @@
 #include "ast/expression.h"
 #include "ast/program.h"
-
 #include "ast/basetypes.h"
+#include "memoryext.h"
 
 #include <iostream>
 #include <chrono>
@@ -221,69 +221,72 @@ void alpiScriptArithmeticTest03(){
     assert( Expression::evaluateUPtr("c * d + (a * b)", &ctx)->toFloat()->value == c * d + (a * b));
 }
 
-#include "ast/astconverter.h"
-
-int main(int , char** ) {
-
-    std::cout << "Start program." << std::endl << std::endl;
-
-    Program * p = Program::parse("\
+void declarationAssignment(){
+    auto program = std::uPtr<Program>(Program::parse("\
+            bool falseBool = false; \
+            bool trueBool = true; \
             int x = 10; \
             float y = 30; \
-            int z = x * y + y / 8; \
-             \
-            ");
-
-    std::cout << p->toString() << std::endl;
+            int z = x * y + y; \
+            y = y / 2; \
+            bool condition = x > y; \
+            "));
     Context ctx;
-    p->execute(&ctx);
+    program->execute(&ctx);
 
-    std::cout << "X value: " << ctx.data.at("x")->toInt()->value << std::endl;
-    std::cout << "Y value: " << ctx.data.at("y")->toFloat()->value << std::endl;
-    std::cout << "Z value: " << ctx.data.at("z")->toInt()->value << std::endl;
-    std::cout << std::endl;
+    assert(ctx.data["x"]->toInt()->value == 10);
+    assert(ctx.data["y"]->toFloat()->value == 15.0);
+    assert(ctx.data["z"]->toInt()->value == 330);
+    assert(ctx.data["condition"]->toBool()->value == false);
+    assert(ctx.data["falseBool"]->toBool()->value == false);
+    assert(ctx.data["trueBool"]->toBool()->value == true);
+}
 
-
-
-    std::cout << "Start tests." << std::endl;
-
-    alpiScriptBooleanTest02();
-    alpiScriptBooleanTest01();
-    alpiScriptArithmeticTest01();
-    alpiScriptArithmeticTest02();
-    alpiScriptArithmeticTest03();
-
-
+void benchmark(){
     using std::chrono::high_resolution_clock;
     using std::chrono::duration_cast;
     using std::chrono::duration;
     using std::chrono::milliseconds;
 
-    std::cout << "Start benchmark full parsing and evaluation." << std::endl;
-
     auto t1 = high_resolution_clock::now();
-    for (int i = 0; i < 10000; i ++)  {
+    for (int i = 0; i < 1000; i ++)  {
         assert(Expression::evaluateUPtr("(1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99")->toInt()->value == (1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99);
     }
     auto t2 = high_resolution_clock::now();
     auto ms_int = duration_cast<milliseconds>(t2 - t1);
-    std::cout << "TIME: " << ms_int.count() << "ms\n";
+    std::cout << "Excution time (full-parse) n=1000: " << ms_int.count() << "ms\n";
 
-    std::cout << "Start benchmark evaluate pre-parsed." << std::endl;
     Expression * precompiled = Expression::parse("(1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99");
 
     t1 = high_resolution_clock::now();
-    for (int i = 0; i < 10000; i ++)  {
+    for (int i = 0; i < 1000; i ++)  {
         precompiled->evaluate();
     }
 
     t2 = high_resolution_clock::now();
     ms_int = duration_cast<milliseconds>(t2 - t1);
-    std::cout << "TIME: " << ms_int.count() << "ms\n";
+    std::cout << "Excution time (pre-parsed) n=1000: " << ms_int.count() << "ms\n";
+}
+
+int main(int , char** ) {
+    using std::cout, std::endl;
+    cout << "Exec declarationAssignment test" << endl;
+    declarationAssignment();
+    cout << "Exec alpiScriptBooleanTest01 test" << endl;
+    alpiScriptBooleanTest01();
+    cout << "Exec alpiScriptBooleanTest02 test" << endl;
+    alpiScriptBooleanTest02();
+    cout << "Exec alpiScriptArithmeticTest01 test" << endl;
+    alpiScriptArithmeticTest01();
+    cout << "Exec alpiScriptArithmeticTest02 test" << endl;
+    alpiScriptArithmeticTest02();
+    cout << "Exec alpiScriptArithmeticTest03 test" << endl;
+    alpiScriptArithmeticTest03();
+    cout << "Exec benchmark" << endl;
+    benchmark();
 
 
-    std::cout << "All tests succesfull." << std::endl;
-
+    std::cout << std::endl << "All tests succesfull." << std::endl;
     return 0;
 }
 

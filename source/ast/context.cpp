@@ -29,3 +29,11 @@ bool Context::isDefined(const std::string & k) const
         return false;
     return true;
 }
+
+std::string Context::toString() const
+{
+    std::string out;
+    for (const auto & l : data )
+        out += l.first + " : "+ l.second->toString();
+    return out;
+}
