@@ -158,15 +158,11 @@ void *AstConverter::visit(const ASTOr *node, void * ) {
 
 void *AstConverter::visit(const ASTProgram * node, void *)
 {
-    Program * firstNode = static_cast<Program *>(node->jjtGetChild(0)->jjtAccept(this, null));
-    Program * lastNode = firstNode;
-    int c  = 1;
-    while (c < node->jjtGetNumChildren()) {
-        lastNode->next = childAcceptUPtr<Program>(this, node, c);
-        c++;
-        lastNode = lastNode->next.get();
-    }
-    return firstNode;
+    Program * program = static_cast<Program *>(node->jjtGetChild(0)->jjtAccept(this, null));
+    for (int i = 1; i < node->jjtGetNumChildren(); i++)
+        program->next.push_back(childAcceptUPtr<Program>(this, node, i));
+
+    return program;
 }
 
 void *AstConverter::visit(const ASTDeclaration * node, void *)
@@ -175,15 +171,13 @@ void *AstConverter::visit(const ASTDeclaration * node, void *)
     decl->dataType = childAcceptUPtr<Id>(this, node, 0);
     decl->id = childAcceptUPtr<Id>(this, node, 1);
 
-    if (node->jjtGetNumChildren() == 2) {
-        return decl;
-    } else { //Declaration + assignement
+    if (node->jjtGetNumChildren() > 2) {
         auto ass = new Assignment();
         ass->id = childAcceptUPtr<Id>(this, node, 1);
         ass->value = childAcceptUPtr<Expression>(this, node, 2);
-        decl->next = std::unique_ptr<Assignment>(ass);
-        return decl;
+        decl->next.push_back(std::unique_ptr<Assignment>(ass));
     }
+    return decl;
 }
 
 void *AstConverter::visit(const ASTAssignment *node, void *)

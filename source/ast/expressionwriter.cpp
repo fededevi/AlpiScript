@@ -146,7 +146,8 @@ void *ExpressionWriter::visit(const Declaration *node, void *data) const
     out->append(" ");
     out->append(node->id->value );
     out->append(";\n");
-    if (node->next) node->next->accept(this, data);
+    for (auto & p : node->next)
+        p->accept(this, data);
     return out;
 }
 
@@ -157,7 +158,8 @@ void *ExpressionWriter::visit(const Assignment *node, void *data) const
     out->append(" = ");
     node->value->accept(this, data);
     out->append(";\n");
-    if (node->next) node->next->accept(this, data);
+    for (auto & p : node->next)
+        p->accept(this, data);
     return out;
 }
 

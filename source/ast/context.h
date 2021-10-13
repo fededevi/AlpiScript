@@ -1,5 +1,4 @@
-#ifndef CONTEXT_H
-#define CONTEXT_H
+#pragma once
 
 #include <map>
 #include <memory>
@@ -8,11 +7,14 @@
 #include "expression.h"
 
 class Literal;
+class DataType;
 class Context
 {
 public:
     Context();
     std::map<std::string, std::unique_ptr<Literal>> data;
-};
+    std::map<std::string, DataType *> types;
 
-#endif // CONTEXT_H
+    bool isDeclared(const std::string &) const;
+    bool isDefined(const std::string &) const;
+};

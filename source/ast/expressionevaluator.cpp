@@ -1,5 +1,6 @@
 #include "expressionevaluator.h"
 #include "expression.h"
+#include "program.h"
 #include "datatype.h"
 #include <stdexcept>
 #include <iostream>
@@ -128,12 +129,24 @@ void *ExpressionEvaluator::visit(const Method *node, void *data) const
 void *ExpressionEvaluator::visit(const Declaration *node, void *data) const
 {
     Context * ctx = static_cast<Context *>(data);
-    //ctx->
+
+    if (ctx->isDeclared(node->id->value))
+        std::cout << "Id redeclared: " << node->toString() << std::endl;
+
+    if (ctx->isDeclared(node->dataType->value))
+        std::cout << "data type not found for declaration: " << node->toString() << std::endl;
+
+    ctx->data.insert({node->id->value, })
+
+
+    return nullptr;
 }
 
 void *ExpressionEvaluator::visit(const Assignment *node, void *data) const
 {
-
+    Context * ctx = static_cast<Context *>(data);
+    std::cout << "Assignment" << std::endl;
+    return nullptr;
 }
 
 

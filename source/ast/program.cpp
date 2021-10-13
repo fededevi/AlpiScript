@@ -23,6 +23,6 @@ Program *Program::parse(const std::string & input)
 Int *Program::execute(Context * ctx)
 {
     static ExpressionEvaluator evaluator;
-    Program * p = static_cast<Program *>( accept(&evaluator, ctx) );
-
+    accept(&evaluator, ctx);
+    return nullptr;
 }

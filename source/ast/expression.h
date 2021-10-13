@@ -76,6 +76,12 @@ class Literal : public Expression {};
 
 class Number : public Literal{};
 
+class CustomLiteral : public Literal {
+    //VISITOR_ACCEPT(ExpressionVisitor);
+    int64_t value;
+    //Int(int64_t v);
+};
+
 class Int : public Number {
     VISITOR_ACCEPT(ExpressionVisitor);
     int64_t value;

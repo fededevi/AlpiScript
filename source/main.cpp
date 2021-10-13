@@ -224,15 +224,25 @@ void alpiScriptArithmeticTest03(){
 #include "ast/astconverter.h"
 
 int main(int , char** ) {
-    Program * p = Program::parse("int x = 0; x = 9 +1;\n");
-    std::cout << p->toString();
-    Context ctx;
-    p->execute(&ctx);
 
-/*
+    std::cout << "Start program." << std::endl;
+
     TypeInt::instance()->load();
     TypeFloat::instance()->load();
     TypeBool::instance()->load();
+
+
+    std::cout << "Loaded basic types." << std::endl;
+
+    Program * p = Program::parse("\
+            int x = 0; \
+             \
+            \n");
+    std::cout << p->toString() << std::endl;
+    Context ctx;
+    p->execute(&ctx);
+
+
 
     std::cout << "Start tests." << std::endl;
 
@@ -272,7 +282,7 @@ int main(int , char** ) {
 
 
     std::cout << "All tests succesfull." << std::endl;
-*/
+
     return 0;
 }
 

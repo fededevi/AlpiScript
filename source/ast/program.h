@@ -15,7 +15,7 @@ public:
     Int * execute( Context * );
 
 public:
-    std::unique_ptr<Program> next;
+    std::vector<std::unique_ptr<Program>> next;
 };
 
 class Declaration : public Program {
