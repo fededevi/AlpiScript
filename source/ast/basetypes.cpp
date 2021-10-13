@@ -7,6 +7,9 @@
 
 void TypeBool::load()
 {
+    if (loaded) return;
+    if (!loaded) loaded = true;
+
     addMethod( Method(BOOL,  Name("!"), {BOOL}, [](std::vector<void *> params) -> Boolean *{
                    return new Boolean(!static_cast<Boolean *>(params[0])->value);
                }));
@@ -30,6 +33,9 @@ TypeBool::TypeBool() {
 
 void TypeFloat::load()
 {
+    if (loaded) return;
+    if (!loaded) loaded = true;
+
     addMethod( Method(FLOAT,  Name("-"), { FLOAT}, [](std::vector<void *> params) -> Float *{
                    return new Float(-static_cast<Float *>(params[0])->value);
                }));
@@ -106,6 +112,9 @@ TypeFloat::TypeFloat()
 
 void TypeInt::load()
 {
+    if (loaded) return;
+    if (!loaded) loaded = true;
+
     addMethod( Method(INT,  Name("-"), { INT}, [](std::vector<void *> params) -> Int *{
                    return new Int(-static_cast<Int *>(params[0])->value);
                }));

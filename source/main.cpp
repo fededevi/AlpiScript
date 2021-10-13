@@ -225,22 +225,23 @@ void alpiScriptArithmeticTest03(){
 
 int main(int , char** ) {
 
-    std::cout << "Start program." << std::endl;
-
-    TypeInt::instance()->load();
-    TypeFloat::instance()->load();
-    TypeBool::instance()->load();
-
-
-    std::cout << "Loaded basic types." << std::endl;
+    std::cout << "Start program." << std::endl << std::endl;
 
     Program * p = Program::parse("\
-            int x = 0; \
+            int x = 10; \
+            int y = 30; \
+            int z = x * y + y / 8; \
              \
-            \n");
+            ");
+
     std::cout << p->toString() << std::endl;
     Context ctx;
     p->execute(&ctx);
+
+    std::cout << "X value: " << ctx.data.at("x")->toInt()->value << std::endl;
+    std::cout << "Y value: " << ctx.data.at("y")->toInt()->value << std::endl;
+    std::cout << "Z value: " << ctx.data.at("z")->toInt()->value << std::endl;
+    std::cout << std::endl;
 
 
 

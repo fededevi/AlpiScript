@@ -39,4 +39,6 @@ public:
     std::string name;
     std::map<const DataType *, Name> fields;
     std::map<MethodSignature, const Method > methods;
+
+    bool loaded = false;
 };

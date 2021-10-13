@@ -136,8 +136,12 @@ void *ExpressionEvaluator::visit(const Declaration *node, void *data) const
     if (ctx->isDeclared(node->dataType->value))
         std::cout << "data type not found for declaration: " << node->toString() << std::endl;
 
-    ctx->data.insert({node->id->value, })
+    auto decl = new Int(0);
+    decl->type = ctx->types.at(node->dataType->value);
+    ctx->data.insert({node->id->value, std::unique_ptr<Int>(decl)});
 
+    for (auto & p : node->next)
+        p->accept(this, data);
 
     return nullptr;
 }
@@ -145,7 +149,17 @@ void *ExpressionEvaluator::visit(const Declaration *node, void *data) const
 void *ExpressionEvaluator::visit(const Assignment *node, void *data) const
 {
     Context * ctx = static_cast<Context *>(data);
-    std::cout << "Assignment" << std::endl;
+
+    if (!ctx->isDeclared(node->id->value))
+        std::cout << "Id not declared: " << node->toString() << std::endl;
+
+    Int * e = static_cast<Int *>(node->value->evaluate(ctx));
+
+    ctx->data[node->id->value] = std::unique_ptr<Int>(e);
+
+    for (auto & p : node->next)
+        p->accept(this, data);
+
     return nullptr;
 }
 
