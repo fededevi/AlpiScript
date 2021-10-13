@@ -33,7 +33,7 @@ void TypeBool::load()
 }
 
 TypeBool::TypeBool() {
-    name = "boolean";
+    name = "bool";
 }
 
 void TypeFloat::load()
