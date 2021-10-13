@@ -29,6 +29,7 @@ enum {
   JJTINTEGER = 21,
   JJTBOOLEAN = 22,
   JJTIDENTIFIER = 23,
+  JJTSTRING = 24,
 };
 
   static JJChar jjtNodeName_arr_0[] = 
@@ -79,6 +80,8 @@ enum {
 {0x42, 0x6f, 0x6f, 0x6c, 0x65, 0x61, 0x6e, 0};
   static JJChar jjtNodeName_arr_23[] = 
 {0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0};
+  static JJChar jjtNodeName_arr_24[] = 
+{0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0};
   static JJString jjtNodeName[] = {
 jjtNodeName_arr_0, 
 jjtNodeName_arr_1, 
@@ -104,7 +107,8 @@ jjtNodeName_arr_20,
 jjtNodeName_arr_21, 
 jjtNodeName_arr_22, 
 jjtNodeName_arr_23, 
+jjtNodeName_arr_24, 
   };
 }
 #endif
-/* JavaCC - OriginalChecksum=a9b9757fb100facc2ad000eda6cb8326 (do not edit this line) */
+/* JavaCC - OriginalChecksum=3bbe396bb16d8d57f106be4e9e12e3c9 (do not edit this line) */

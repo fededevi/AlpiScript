@@ -30,6 +30,7 @@ public:
     Int * toInt();
     Float * toFloat();
     Boolean * toBool();
+    String * toStringLiteral();
 
 public:
     DataType * type;
@@ -47,12 +48,7 @@ public:
     std::unique_ptr<Expression> operand;
 };
 
-class Add : public BinaryExpression {
-    virtual void* accept(const ExpressionVisitor * v, void * d = nullptr) const {
-        Context * c = static_cast<Context * >( d );
-        return v->visit(this, c);
-    }
- };
+class Add : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 class Sub : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 class Mul : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 class Div : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
@@ -77,9 +73,12 @@ class Literal : public Expression {};
 class Number : public Literal{};
 
 class CustomLiteral : public Literal {
-    //VISITOR_ACCEPT(ExpressionVisitor);
-    int64_t value;
-    //Int(int64_t v);
+};
+
+class String : public Literal {
+    VISITOR_ACCEPT(ExpressionVisitor);
+    std::string value;
+    String(const char * v);
 };
 
 class Int : public Number {

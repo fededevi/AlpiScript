@@ -1,5 +1,4 @@
 #include "context.h"
-
 #include "basetypes.h"
 
 Context::Context()
@@ -12,6 +11,9 @@ Context::Context()
 
     TypeInt::instance()->load();
     types.insert({TypeInt::instance()->name, TypeInt::instance()});
+
+    TypeString::instance()->load();
+    types.insert({TypeString::instance()->name, TypeString::instance()});
 }
 
 bool Context::isDeclared(const std::string & k) const

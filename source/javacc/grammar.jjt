@@ -76,7 +76,6 @@ TOKEN : { < #LETTER : ["A"-"Z","_","a"-"z"] > }
 
 TOKEN : { < BOOLEAN : "true" | "false" > }
 
-
 TOKEN : {
 <INTEGER_LITERAL: <DECIMAL_LITERAL> (["l","L"])? | <HEX_LITERAL> (["l","L"])? | <OCTAL_LITERAL> (["l","L"])?>
 |  <#DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])*>
@@ -87,7 +86,6 @@ TOKEN : {
 |  <CHARACTER_LITERAL: "\'" (~["\'","\\","\n","\r"] | "\\" (["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])? | ["0"-"3"] ["0"-"7"] ["0"-"7"])) "\'">
 |  <STRING_LITERAL: "\"" ( ~["\"","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])?  | ["0"-"3"] ["0"-"7"] ["0"-"7"] | ( ["\n","\r"] | "\r\n")))* "\"">
 }
-
 
 TOKEN : { <IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)* > }
 
@@ -138,6 +136,7 @@ void unary() : {}
  | parseInteger()
  | ( "-" parseInteger() ) #Negative(1)
  | parseBoolean()
+ | parseString()
  | identifier()
  | <LP> expression() <RP>
  | <NOT> expression() #Not(1)
@@ -154,6 +153,9 @@ void parseBoolean() #Boolean : {Token * t;}
 
 void identifier() #Identifier: {Token * t;}
 { t=<IDENTIFIER> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
+
+void parseString() #String: {Token * t;}
+{ t=<STRING_LITERAL> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
 
 
 

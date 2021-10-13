@@ -32,6 +32,7 @@ class ParserVisitor
   virtual void* visit(const ASTInteger *node, void* data) = 0;
   virtual void* visit(const ASTBoolean *node, void* data) = 0;
   virtual void* visit(const ASTIdentifier *node, void* data) = 0;
+  virtual void* visit(const ASTString *node, void* data) = 0;
   virtual ~ParserVisitor() { }
 };
 class ParserDefaultVisitor : public ParserVisitor {
@@ -109,8 +110,11 @@ public:
   virtual void* visit(const ASTIdentifier *node, void* data) {
     return defaultVisit(node, data);
   }
+  virtual void* visit(const ASTString *node, void* data) {
+    return defaultVisit(node, data);
+  }
   ~ParserDefaultVisitor() { }
 };
 }
 #endif
-/* JavaCC - OriginalChecksum=5b013f6be1fc6458ca5ac63963c1cf8f (do not edit this line) */
+/* JavaCC - OriginalChecksum=5feb7c8bcd27b927e4ef49a1f664352e (do not edit this line) */

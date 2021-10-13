@@ -221,27 +221,6 @@ void alpiScriptArithmeticTest03(){
     assert( Expression::evaluateUPtr("c * d + (a * b)", &ctx)->toFloat()->value == c * d + (a * b));
 }
 
-void declarationAssignment(){
-    auto program = std::uPtr<Program>(Program::parse("\
-            bool falseBool = false; \
-            bool trueBool = true; \
-            int x = 10; \
-            float y = 30; \
-            int z = x * y + y; \
-            y = y / 2; \
-            bool condition = x > y; \
-            "));
-    Context ctx;
-    program->execute(&ctx);
-
-    assert(ctx.data["x"]->toInt()->value == 10);
-    assert(ctx.data["y"]->toFloat()->value == 15.0);
-    assert(ctx.data["z"]->toInt()->value == 330);
-    assert(ctx.data["condition"]->toBool()->value == false);
-    assert(ctx.data["falseBool"]->toBool()->value == false);
-    assert(ctx.data["trueBool"]->toBool()->value == true);
-}
-
 void benchmark(){
     using std::chrono::high_resolution_clock;
     using std::chrono::duration_cast;
@@ -268,6 +247,44 @@ void benchmark(){
     std::cout << "Excution time (pre-parsed) n=1000: " << ms_int.count() << "ms\n";
 }
 
+void declarationAssignment(){
+    auto program = std::uPtr<Program>(Program::parse("\
+            bool falseBool = false; \
+                                      bool trueBool = true; \
+            int x = 10; \
+    float y = 30; \
+    int z = x * y + y; \
+    y = y / 2; \
+    bool condition = x > y; \
+    "));
+    Context ctx;
+    program->execute(&ctx);
+
+    assert(ctx.data["x"]->toInt()->value == 10);
+    assert(ctx.data["y"]->toFloat()->value == 15.0);
+    assert(ctx.data["z"]->toInt()->value == 330);
+    assert(ctx.data["condition"]->toBool()->value == false);
+    assert(ctx.data["falseBool"]->toBool()->value == false);
+    assert(ctx.data["trueBool"]->toBool()->value == true);
+}
+
+void stringTest(){
+    auto program = std::uPtr<Program>(Program::parse("\
+            string str = \"stringValue\"; \
+            "));
+    Context ctx;
+    program->execute(&ctx);
+    assert(ctx.data["str"]->toStringLiteral()->value == "stringValue");
+
+    /*
+    assert(ctx.data["x"]->toInt()->value == 10);
+    assert(ctx.data["y"]->toFloat()->value == 15.0);
+    assert(ctx.data["z"]->toInt()->value == 330);
+    assert(ctx.data["condition"]->toBool()->value == false);
+    assert(ctx.data["falseBool"]->toBool()->value == false);
+    assert(ctx.data["trueBool"]->toBool()->value == true);*/
+}
+
 int main(int , char** ) {
     using std::cout, std::endl;
     cout << "Exec declarationAssignment test" << endl;
@@ -282,6 +299,8 @@ int main(int , char** ) {
     alpiScriptArithmeticTest02();
     cout << "Exec alpiScriptArithmeticTest03 test" << endl;
     alpiScriptArithmeticTest03();
+    cout << "Exec stringTest" << endl;
+    stringTest();
     cout << "Exec benchmark" << endl;
     benchmark();
 

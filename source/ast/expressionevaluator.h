@@ -18,21 +18,17 @@ class ExpressionEvaluator : public ExpressionVisitor
 {
     Expression * evaluate(const Expression *) const;
 
-public:
     virtual void *visit(const Add * node, void *data) const override;
     virtual void *visit(const Sub * node, void *data) const override;
     virtual void *visit(const Mul * node, void *data) const override;
     virtual void *visit(const Div * node, void *data) const override;
     virtual void *visit(const Mod * node, void *data) const override;
     virtual void *visit(const Neg *node, void *data) const override;
-
-public:
     virtual void *visit(const Id * node, void *data) const override;
     virtual void *visit(const Int * node, void *data) const override;
+    virtual void *visit(const String * node, void *data) const override;
     virtual void *visit(const Float *node, void *data) const override;
     virtual void *visit(const Boolean *node, void *data) const override;
-
-public:
     virtual void *visit(const LessThan *node, void *data) const override;
     virtual void *visit(const LessEqual *node, void *data) const override;
     virtual void *visit(const GreaterEqual *node, void *data) const override;
@@ -40,19 +36,11 @@ public:
     virtual void *visit(const Equal *node, void *data) const override;
     virtual void *visit(const NotEqual *node, void *data) const override;
     virtual void *visit(const Not *node, void *data) const override;
-
-public:
     virtual void *visit(const And *node, void *data) const override;
     virtual void *visit(const Or *node, void *data) const override;
-
-public:
     virtual void *visit(const TypeId *node, void *data) const override;
     virtual void *visit(const Parameter *node, void *data) const override;
     virtual void *visit(const Method *node, void *data) const override;
-
-
-    // ExpressionVisitor interface
-public:
     virtual void *visit(const Declaration *node, void *data) const override;
     virtual void *visit(const Assignment *node, void *data) const override;
 };
