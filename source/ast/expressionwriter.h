@@ -52,4 +52,9 @@ public:
     void *visit(const TypeId *node, void *data) const;
     void *visit(const Parameter *node, void *data) const;
     void *visit(const Method *node, void *data) const;
+
+    // ExpressionVisitor interface
+public:
+    void *visit(const Declaration *node, void *data) const;
+    void *visit(const Assignment *node, void *data) const;
 };

@@ -3,6 +3,7 @@
 #include "../javacc/generated/ParserVisitor.h"
 
 class Expression;
+class Program;
 class UnaryExpression;
 class BinaryExpression;
 namespace AlpiScript {
@@ -10,7 +11,8 @@ namespace AlpiScript {
 class AstConverter: public ParserVisitor {
 
 public:
-    Expression * parse(const std::string & input);
+    Expression * parseExpression(const std::string & input);
+    Program * parseProgram(const std::string & input);
 
     virtual void *visit(const SimpleNode *node, void *data) override;
 
@@ -38,6 +40,10 @@ public:
     virtual void *visit(const ASTAnd *node, void *data) override;
     virtual void *visit(const ASTOr *node, void *data) override;
 
+public:
+    void *visit(const ASTProgram *node, void *data) override;
+    void *visit(const ASTDeclaration *node, void *data) override;
+    void *visit(const ASTAssignment *node, void *data) override;
 };
 
 }

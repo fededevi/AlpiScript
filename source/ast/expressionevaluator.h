@@ -46,8 +46,13 @@ public:
     virtual void *visit(const Or *node, void *data) const override;
 
 public:
-    void *visit(const TypeId *node, void *data) const override;
-    void *visit(const Parameter *node, void *data) const override;
-    void *visit(const Method *node, void *data) const override;
+    virtual void *visit(const TypeId *node, void *data) const override;
+    virtual void *visit(const Parameter *node, void *data) const override;
+    virtual void *visit(const Method *node, void *data) const override;
 
+
+    // ExpressionVisitor interface
+public:
+    virtual void *visit(const Declaration *node, void *data) const override;
+    virtual void *visit(const Assignment *node, void *data) const override;
 };

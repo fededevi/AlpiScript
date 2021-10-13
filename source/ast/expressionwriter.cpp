@@ -1,6 +1,7 @@
 #include "expressionwriter.h"
 
 #include "expression.h"
+#include "program.h"
 
 
 void * ExpressionWriter::writeBinaryOperation(const BinaryExpression * node, void * data, const std::string & op) const
@@ -136,5 +137,29 @@ void *ExpressionWriter::visit(const Parameter *node, void *data) const
 void *ExpressionWriter::visit(const Method *node, void *data) const
 {
 
+}
+
+void *ExpressionWriter::visit(const Declaration *node, void *data) const
+{
+    std::string * out = (std::string *)data;
+    out->append(node->dataType->value );
+    out->append(" ");
+    out->append(node->id->value );
+    out->append(";\n");
+    for (auto & p : node->next)
+        p->accept(this, data);
+    return out;
+}
+
+void *ExpressionWriter::visit(const Assignment *node, void *data) const
+{
+    std::string * out = (std::string *)data;
+    out->append(node->id->value );
+    out->append(" = ");
+    node->value->accept(this, data);
+    out->append(";\n");
+    for (auto & p : node->next)
+        p->accept(this, data);
+    return out;
 }
 

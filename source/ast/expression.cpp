@@ -2,8 +2,8 @@
 #include <iostream>
 
 #include "astconverter.h"
-#include "../ast/expressionwriter.h"
-#include "../ast/expressionevaluator.h"
+#include "expressionwriter.h"
+#include "expressionevaluator.h"
 
 #include "datatype.h"
 #include "basetypes.h"
@@ -12,8 +12,8 @@ using namespace AlpiScript;
 
 Expression *Expression::parse(const std::string & input)
 {
-    AstConverter astconv;
-    return astconv.parse(input + "\n");
+    static AstConverter astconv;
+    return astconv.parseExpression(input + "\n");
 }
 
 Expression *Expression::evaluate( Context * ctx ) const

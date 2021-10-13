@@ -69,6 +69,9 @@ static JJChar jjstrLiteralChars_40[] = {0};
 static JJChar jjstrLiteralChars_41[] = {0};
 static JJChar jjstrLiteralChars_42[] = {0};
 static JJChar jjstrLiteralChars_43[] = {0};
+
+static JJChar jjstrLiteralChars_44[] = {0x3b, 0};
+static JJChar jjstrLiteralChars_45[] = {0x3d, 0};
 static const JJString jjstrLiteralImages[] = {
 jjstrLiteralChars_0, 
 jjstrLiteralChars_1, 
@@ -114,6 +117,8 @@ jjstrLiteralChars_40,
 jjstrLiteralChars_41, 
 jjstrLiteralChars_42, 
 jjstrLiteralChars_43, 
+jjstrLiteralChars_44, 
+jjstrLiteralChars_45, 
 };
 
 /** Lexer state names. */
@@ -123,7 +128,7 @@ static const JJString lexStateNames[] = {
 lexStateNames_arr_0, 
 };
 static const unsigned long long jjtoToken[] = {
-   0xe8cffffffc1ULL, 
+   0x3e8cffffffc1ULL, 
 };
 static const unsigned long long jjtoSkip[] = {
    0x3eULL, 
@@ -244,10 +249,13 @@ int  ParserTokenManager::jjStartNfa_0(int pos, unsigned long long active0){
          return jjStopAtPos(0, 19);
       case 47:
          return jjStopAtPos(0, 21);
+      case 59:
+         return jjStopAtPos(0, 44);
       case 60:
          jjmatchedKind = 23;
          return jjMoveStringLiteralDfa1_0(0x1000000ULL);
       case 61:
+         jjmatchedKind = 45;
          return jjMoveStringLiteralDfa1_0(0x8000000ULL);
       case 62:
          jjmatchedKind = 26;
