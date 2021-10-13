@@ -4,7 +4,7 @@
 #define INT TypeInt::instance()
 #define FLOAT TypeFloat::instance()
 #define BOOL TypeBool::instance()
-#define STRING TypeBool::instance()
+#define STRING TypeString::instance()
 
 void TypeBool::load()
 {
