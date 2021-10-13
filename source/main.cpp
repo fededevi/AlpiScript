@@ -229,7 +229,7 @@ int main(int , char** ) {
 
     Program * p = Program::parse("\
             int x = 10; \
-            int y = 30; \
+            float y = 30; \
             int z = x * y + y / 8; \
              \
             ");
@@ -239,7 +239,7 @@ int main(int , char** ) {
     p->execute(&ctx);
 
     std::cout << "X value: " << ctx.data.at("x")->toInt()->value << std::endl;
-    std::cout << "Y value: " << ctx.data.at("y")->toInt()->value << std::endl;
+    std::cout << "Y value: " << ctx.data.at("y")->toFloat()->value << std::endl;
     std::cout << "Z value: " << ctx.data.at("z")->toInt()->value << std::endl;
     std::cout << std::endl;
 

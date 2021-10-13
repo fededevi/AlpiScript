@@ -24,7 +24,6 @@ bool Context::isDeclared(const std::string & k) const
 
 bool Context::isDefined(const std::string & k) const
 {
-
     auto it = types.find(k);
     if ( types.end() == it )
         return false;

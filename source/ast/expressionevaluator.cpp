@@ -2,6 +2,8 @@
 #include "expression.h"
 #include "program.h"
 #include "datatype.h"
+#include "../memoryext.h"
+
 #include <stdexcept>
 #include <iostream>
 
@@ -133,12 +135,13 @@ void *ExpressionEvaluator::visit(const Declaration *node, void *data) const
     if (ctx->isDeclared(node->id->value))
         std::cout << "Id redeclared: " << node->toString() << std::endl;
 
-    if (ctx->isDeclared(node->dataType->value))
-        std::cout << "data type not found for declaration: " << node->toString() << std::endl;
+    if (!ctx->isDefined(node->dataType->value))
+        std::cout << "Undefined type in declaration: " << node->toString() << std::endl;
 
-    auto decl = new Int(0);
-    decl->type = ctx->types.at(node->dataType->value);
-    ctx->data.insert({node->id->value, std::unique_ptr<Int>(decl)});
+    DataType * dataType = ctx->types.at(node->dataType->value);
+    auto newInstace = static_cast<Literal *>(dataType->methods.at({Name("new"), {}}).implementation({}));
+
+    ctx->data.insert({node->id->value, std::uPtr<Literal>(newInstace)});
 
     for (auto & p : node->next)
         p->accept(this, data);
@@ -151,11 +154,21 @@ void *ExpressionEvaluator::visit(const Assignment *node, void *data) const
     Context * ctx = static_cast<Context *>(data);
 
     if (!ctx->isDeclared(node->id->value))
-        std::cout << "Id not declared: " << node->toString() << std::endl;
+        std::cout << "Undefined reference: " << node->toString() << std::endl;
 
-    Int * e = static_cast<Int *>(node->value->evaluate(ctx));
+    auto & contextValue = ctx->data[node->id->value];
 
-    ctx->data[node->id->value] = std::unique_ptr<Int>(e);
+    auto e = std::uPtr<Literal>(node->value->evaluate(ctx));
+
+    DataType * dataType = contextValue->type;
+
+    MethodSignature ms = {Name("="), {e->type}};
+    if (!dataType->contains(ms))
+        std::cout << "Undefined method -> " <<dataType->name << ":" << Method::signature(ms) << std::endl;
+
+    auto assignMethod = dataType->methods.at(ms);
+
+    contextValue = std::uPtr<Literal>(assignMethod.implementation({e.get()}));
 
     for (auto & p : node->next)
         p->accept(this, data);

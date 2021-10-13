@@ -9,7 +9,12 @@ void TypeBool::load()
 {
     if (loaded) return;
     if (!loaded) loaded = true;
-
+    addMethod( Method(BOOL,  Name("="), {BOOL}, [](std::vector<void *> params) -> Boolean *{
+                   return new Boolean(static_cast<Boolean *>(params[0])->value);
+               }));
+    addMethod( Method(BOOL,  Name("new"), { }, [](std::vector<void *>) -> Boolean *{
+                   return new Boolean(false);
+               }));
     addMethod( Method(BOOL,  Name("!"), {BOOL}, [](std::vector<void *> params) -> Boolean *{
                    return new Boolean(!static_cast<Boolean *>(params[0])->value);
                }));
@@ -36,10 +41,21 @@ void TypeFloat::load()
     if (loaded) return;
     if (!loaded) loaded = true;
 
+
+    addMethod( Method(FLOAT,  Name("="), {FLOAT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Float *>(params[0])->value);
+               }));
+
+    addMethod( Method(FLOAT,  Name("="), {INT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Int *>(params[0])->value);
+               }));
+
+    addMethod( Method(FLOAT,  Name("new"), { }, [](std::vector<void *>) -> Float *{
+                   return new Float(0);
+               }));
     addMethod( Method(FLOAT,  Name("-"), { FLOAT}, [](std::vector<void *> params) -> Float *{
                    return new Float(-static_cast<Float *>(params[0])->value);
                }));
-
     addMethod( Method(FLOAT,  Name("+"), {FLOAT, FLOAT}, [](std::vector<void *> params) -> Float *{
                    return new Float(static_cast<Float *>(params[0])->value + static_cast<Float *>(params[1])->value);
                }));
@@ -115,10 +131,20 @@ void TypeInt::load()
     if (loaded) return;
     if (!loaded) loaded = true;
 
+    //Int assignment operator from int
+    addMethod( Method(INT,  Name("="), {INT}, [](std::vector<void *> params) -> Int *{
+                   return new Int(static_cast<Int *>(params[0])->value);
+               }));
+    //Int assignment operator from float
+    addMethod( Method(INT,  Name("="), {FLOAT}, [](std::vector<void *> params) -> Int *{
+                   return new Int(static_cast<Float *>(params[0])->value);
+               }));
+    addMethod( Method(INT,  Name("new"), { }, [](std::vector<void *>) -> Int *{
+                   return new Int(0);
+               }));
     addMethod( Method(INT,  Name("-"), { INT}, [](std::vector<void *> params) -> Int *{
                    return new Int(-static_cast<Int *>(params[0])->value);
                }));
-
     addMethod( Method(INT,  Name("+"), {INT, INT}, [](std::vector<void *> params) -> Int *{
                    return new Int(static_cast<Int *>(params[0])->value + static_cast<Int *>(params[1])->value);
                }));

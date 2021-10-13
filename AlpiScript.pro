@@ -68,7 +68,8 @@ HEADERS += \
     source/javacc/generated/Token.h \
     source/javacc/generated/TokenManager.h \
     source/javacc/generated/TokenMgrError.h \
-    source/ast/astconverter.h
+    source/ast/astconverter.h \
+    source/memoryext.h
 
 SOURCES += \
     source/ast/basetypes.cpp \
@@ -110,4 +111,5 @@ SOURCES += \
     source/javacc/generated/Token.cc \
     source/javacc/generated/TokenMgrError.cc \
     source/main.cpp \
-    source/ast/astconverter.cpp
+    source/ast/astconverter.cpp \
+    source/memoryext.cpp
