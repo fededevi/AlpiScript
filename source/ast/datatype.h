@@ -1,8 +1,9 @@
 #pragma once
 
-#include <map>
-#include <vector>
 #include <functional>
+#include <map>
+#include <string>
+#include <vector>
 
 #include "visitormacros.h"
 #include "expressionvisitor.h"
